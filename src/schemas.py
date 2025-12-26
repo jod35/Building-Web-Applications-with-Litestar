@@ -3,14 +3,17 @@ from decimal import Decimal
 from enum import Enum
 from datetime import datetime
 
+
 class CategoryEnum(Enum):
     electronics = "Electronics"
     medical = "Medical"
     food = "Food"
 
+
 class StatusEnum(Enum):
     DRAFT = "Draft"
     PUBLIC = "Public"
+
 
 @dataclass
 class ProductReadSchema:
@@ -20,11 +23,11 @@ class ProductReadSchema:
     category: CategoryEnum
     unit_price: Decimal = Decimal("0")
     cost_price: Decimal = Decimal("0")
-    status : StatusEnum = StatusEnum.DRAFT
+    status: StatusEnum = StatusEnum.DRAFT
     size: str = None
     color: str = None
-    weight: int =0
-    weight_unit: str ="kg"
+    weight: int = 0
+    weight_unit: str = "kg"
     width: Decimal = None
     height: Decimal = None
     dimensions_unit: str = "cm"
@@ -42,7 +45,7 @@ class ProductWriteSchema:
     category: CategoryEnum
     unit_price: Decimal = Decimal("0")
     cost_price: Decimal = Decimal("0")
-    status : StatusEnum = StatusEnum.DRAFT
+    status: StatusEnum = StatusEnum.DRAFT
     size: str = None
     color: str = None
     weight: int = 0
@@ -53,6 +56,3 @@ class ProductWriteSchema:
     stock: int = 0
     country_of_origin: str = None
     product_metadata: dict = field(default_factory={})
-
-
-
