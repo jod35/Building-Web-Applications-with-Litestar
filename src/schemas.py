@@ -13,7 +13,7 @@ class StatusEnum(Enum):
     PUBLIC = "Public"
 
 @dataclass
-class ProductRead:
+class ProductReadSchema:
     id: int
     name: str
     description: str
@@ -30,13 +30,13 @@ class ProductRead:
     dimensions_unit: str = "cm"
     stock: int = 0
     country_of_origin: str = None
-    metadata: dict = field(default_factory={})
+    product_metadata: dict = field(default_factory={})
     updated_at: datetime = None
     created_at: datetime = None
 
 
 @dataclass
-class ProductWrite:
+class ProductWriteSchema:
     name: str
     description: str
     category: CategoryEnum
@@ -52,7 +52,7 @@ class ProductWrite:
     dimensions_unit: str = "cm"
     stock: int = 0
     country_of_origin: str = None
-    metadata: dict = field(default_factory={})
+    product_metadata: dict = field(default_factory={})
 
 
 
