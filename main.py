@@ -1,6 +1,4 @@
-from typing import Optional
 from litestar import Litestar, get
-from sqlalchemy import select
 
 from src.routes.products import ProductController
 
