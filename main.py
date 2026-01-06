@@ -14,14 +14,8 @@ route_handlers = [
     ProductController
 ]
 
-async def init_db(app: Litestar) -> None:
-    async with sqla_config.get_session() as session:
-        statement = select(ProductModel).order_by(ProductModel.created_at.desc())
-        result = await session.execute(statement)
-        print(result.all())
 
 app = Litestar(
     route_handlers=route_handlers,
-    plugins=[sqla_plugin],
-    on_startup=[init_db]
+    plugins=[sqla_plugin]
 )

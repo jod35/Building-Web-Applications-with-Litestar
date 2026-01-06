@@ -3,13 +3,14 @@ from litestar.plugins.sqlalchemy import (
     SQLAlchemyAsyncConfig,
     SQLAlchemyInitPlugin,
 )
+from advanced_alchemy.config.asyncio import AlembicAsyncConfig
 
 from src.config import CONFIG
 
 session_config = AsyncSessionConfig(expire_on_commit=False)
 
 sqla_config = SQLAlchemyAsyncConfig(
-    connection_string=CONFIG.DB_URL, session_config=session_config, create_all=True
+    connection_string=CONFIG.DB_URL, session_config=session_config 
 )
 
 sqla_plugin = SQLAlchemyInitPlugin(config=sqla_config)
