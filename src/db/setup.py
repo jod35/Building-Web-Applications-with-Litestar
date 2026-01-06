@@ -1,9 +1,6 @@
-from litestar.plugins.sqlalchemy import (
-    AsyncSessionConfig,
-    SQLAlchemyAsyncConfig,
-    SQLAlchemyInitPlugin,
-)
-from advanced_alchemy.config.asyncio import AlembicAsyncConfig
+from litestar.plugins.sqlalchemy import (AsyncSessionConfig,
+                                         SQLAlchemyAsyncConfig,
+                                         SQLAlchemyInitPlugin)
 
 from src.config import CONFIG
 

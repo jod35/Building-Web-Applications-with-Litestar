@@ -3,8 +3,8 @@ from typing import Optional
 
 from litestar.plugins.sqlalchemy import BigIntAuditBase
 from sqlalchemy import ForeignKey
-from sqlalchemy import ForeignKey
-from sqlalchemy.dialects.mysql import DECIMAL, ENUM, INTEGER, JSON, TEXT, VARCHAR
+from sqlalchemy.dialects.mysql import (DECIMAL, ENUM, INTEGER, JSON, TEXT,
+                                       VARCHAR)
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.schemas import CategoryEnum, StatusEnum
