@@ -11,6 +11,9 @@ from src.schemas import CategoryEnum, StatusEnum
 
 
 class ProductModel(BigIntAuditBase):
+    """
+    Product / Item data
+    """
     __tablename__ = "products"
 
     name: Mapped[str] = mapped_column(VARCHAR(255), nullable=False)
