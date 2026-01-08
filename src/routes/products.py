@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.db.dependencies import provide_product_repo
 from src.db.models import ProductModel
 from src.db.repositories import ProductRepository
-from src.schemas import ProductReadSchema, ProductWriteSchema
+from src.schemas.products import ProductReadSchema, ProductWriteSchema
 
 
 class ProductController(Controller):
