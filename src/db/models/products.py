@@ -8,6 +8,7 @@ from sqlalchemy.dialects.mysql import (DECIMAL, ENUM, INTEGER, JSON, TEXT,
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.schemas.products import CategoryEnum, StatusEnum
+from . import *
 
 
 class ProductModel(BigIntAuditBase):
@@ -37,6 +38,11 @@ class ProductModel(BigIntAuditBase):
     )
     supplier_id: Mapped[Optional[int]] = mapped_column(ForeignKey("suppliers.id"), nullable=True)
     product_metadata: Mapped[dict] = mapped_column(JSON, default=dict)
-
+        
+    # relationships
+    supplier: Mapped[Optional["SupplierModel"]] = relationship("SupplierModel", back_populates="products")
+    purchase_order_items: Mapped[list["PurchaseOrderItemModel"]] = relationship("PurchaseOrderItemModel", back_populates="product", lazy="selectin")
+    invoice_items: Mapped[list["SupplierInvoiceItemModel"]] = relationship("SupplierInvoiceItemModel", back_populates="product", lazy="selectin")
+    
     def __repr__(self):
         return f"<ProductModel {self.name}>"

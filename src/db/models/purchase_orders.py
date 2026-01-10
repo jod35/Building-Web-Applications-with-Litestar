@@ -7,8 +7,7 @@ from datetime import datetime
 from decimal import Decimal
 from enum import Enum
 
-from src.db.models.products import ProductModel
-from src.db.models.suppliers import SupplierModel
+from . import *
 
 class PurchaseOrderStatus(str, Enum):
     DRAFT = "DRAFT"
@@ -45,7 +44,8 @@ class PurchaseOrderModel(BigIntAuditBase):
 
     notes: Mapped[Optional[str]] = mapped_column(TEXT)
 
-    supplier: Mapped[SupplierModel] = relationship(back_populates="purchase_orders")
+    supplier: Mapped["SupplierModel"] = relationship(back_populates="purchase_orders")
+    items: Mapped[List["PurchaseOrderItemModel"]] = relationship(back_populates="purchase_order",lazy="selectin")
 
     def __repr__(self) -> str:
         return f"<PurchaseOrder {self.po_number} ({self.status})>"
@@ -72,8 +72,9 @@ class PurchaseOrderItemModel(BigIntAuditBase):
 
     notes: Mapped[Optional[str]] = mapped_column(TEXT)
 
-    purchase_order: Mapped[PurchaseOrderModel] = relationship(back_populates="items")
-    product: Mapped[ProductModel] = relationship(back_populates="purchase_order_items")
+    #relationships
+    purchase_order: Mapped["PurchaseOrderModel"] = relationship(back_populates="items")
+    product: Mapped["ProductModel"] = relationship(back_populates="purchase_order_items")
 
     def __repr__(self) -> str:
         return f"<POItem PO:{self.purchase_order_id} Prod:{self.product_id}>"

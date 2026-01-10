@@ -7,9 +7,7 @@ from datetime import datetime
 from decimal import Decimal
 from enum import Enum
 
-from .suppliers import SupplierModel
-from .products import ProductModel
-from .purchase_orders import PurchaseOrderModel, PurchaseOrderItemModel
+from . import *
 
 class InvoiceStatusEnum(Enum):
     """Status of a supplier invoice"""
@@ -66,7 +64,10 @@ class SupplierInvoiceModel(BigIntAuditBase):
     supplier: Mapped[SupplierModel] = relationship()
     purchase_order: Mapped[Optional["PurchaseOrderModel"]] = relationship()
     items: Mapped[List["SupplierInvoiceItemModel"]] = relationship(
-        back_populates="invoice", cascade="all, delete-orphan"
+        back_populates="invoice", cascade="all, delete-orphan", lazy="selectin"
+    )
+    supplier_invoice_items: Mapped[List["SupplierInvoiceItemModel"]] = relationship(
+        back_populates="invoice", lazy="selectin"
     )
 
     __table_args__ = (
@@ -102,9 +103,10 @@ class SupplierInvoiceItemModel(BigIntAuditBase):
 
     notes: Mapped[Optional[str]] = mapped_column(TEXT)
 
-    invoice: Mapped[SupplierInvoiceModel] = relationship(back_populates="items")
-    product: Mapped[ProductModel] = relationship(back_populates="supplier_invoice_items")
-    purchase_order_item: Mapped[Optional[PurchaseOrderItemModel]] = relationship()
+    # relationships
+    invoice: Mapped["SupplierInvoiceModel"] = relationship(back_populates="items")
+    product: Mapped["ProductModel"] = relationship(back_populates="invoice_items")
+    purchase_order_item: Mapped[Optional["PurchaseOrderItemModel"]] = relationship()
 
     def __repr__(self) -> str:
         return f"<InvItem Inv:{self.invoice_id} Prod:{self.product_id}>"
