@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Optional
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
@@ -32,6 +33,7 @@ class ProductReadSchema:
     height: Decimal = None
     dimensions_unit: str = "cm"
     stock: int = 0
+    supplier_id: int = None
     country_of_origin: str = None
     product_metadata: dict = field(default_factory={})
     updated_at: datetime = None
@@ -54,5 +56,6 @@ class ProductWriteSchema:
     height: Decimal = None
     dimensions_unit: str = "cm"
     stock: int = 0
+    supplier_id : Optional[int] = None
     country_of_origin: str = None
     product_metadata: dict = field(default_factory={})

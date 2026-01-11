@@ -66,9 +66,6 @@ class SupplierInvoiceModel(BigIntAuditBase):
     items: Mapped[List["SupplierInvoiceItemModel"]] = relationship(
         back_populates="invoice", cascade="all, delete-orphan", lazy="selectin"
     )
-    supplier_invoice_items: Mapped[List["SupplierInvoiceItemModel"]] = relationship(
-        back_populates="invoice", lazy="selectin"
-    )
 
     __table_args__ = (
         UniqueConstraint("supplier_id", "invoice_number", name="uq_supplier_invoice"),
