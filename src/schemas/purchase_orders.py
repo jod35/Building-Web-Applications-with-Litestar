@@ -35,6 +35,7 @@ class PurchaseOrderReadSchema:
 class PurchaseOrderWriteSchema:
     po_number: str
     supplier_id: int
+    items: list["PurchaseOrderItemWriteSchema"]
     order_date: datetime = field(default_factory=datetime.now)
     total_amount: Decimal = Decimal("0.00")
     expected_delivery_date: Optional[datetime] = None

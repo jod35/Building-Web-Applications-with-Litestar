@@ -1,6 +1,6 @@
 from litestar.plugins.sqlalchemy import repository
 
-from src.db.models import ProductModel, SupplierModel
+from src.db.models import ProductModel, SupplierModel, PurchaseOrderModel
 
 
 class ProductRepository(repository.SQLAlchemyAsyncRepository[ProductModel]):
@@ -9,3 +9,7 @@ class ProductRepository(repository.SQLAlchemyAsyncRepository[ProductModel]):
 
 class SupplierRepository(repository.SQLAlchemyAsyncRepository[SupplierModel]):
     model_type = SupplierModel
+
+
+class PurchaseOrderRepository(repository.SQLAlchemyAsyncRepository[PurchaseOrderModel]):
+    model_type = PurchaseOrderModel
