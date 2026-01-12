@@ -6,15 +6,18 @@ from litestar.di import Provide
 from litestar.exceptions import NotFoundException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.dependencies import provide_product_repo
+from src.db.dependencies import provide_product_repo, provide_supplier_repo
 from src.db.models import ProductModel
-from src.db.repositories import ProductRepository
+from src.db.repositories import ProductRepository, SupplierRepository
 from src.schemas.products import ProductReadSchema, ProductWriteSchema
 
 
 class ProductController(Controller):
     path = "/products"
-    dependencies = {"product_repo": Provide(provide_product_repo)}
+    dependencies = {
+        "product_repo": Provide(provide_product_repo),
+        "supplier_repo": provide_supplier_repo,
+    }
 
     @get("/")
     async def list_products(
@@ -40,15 +43,26 @@ class ProductController(Controller):
         data: ProductWriteSchema,
         db_session: AsyncSession,
         product_repo: ProductRepository,
+        supplier_repo: SupplierRepository,
     ) -> ProductReadSchema:
         # convert schema data to dict
         data_dict = asdict(data)
+        try:
+            supplier_id = data_dict.get("supplier_id")
+            supplier = await supplier_repo.get(item_id=supplier_id)
 
-        new_product = await product_repo.add(ProductModel(**data_dict))
+            if not supplier:
+                raise NotFoundException(
+                    detail=f"Supplier with ID {supplier_id} not found"
+                )
 
-        await db_session.commit()
+            new_product = await product_repo.add(ProductModel(**data_dict))
 
-        return ProductReadSchema(**new_product.to_dict())
+            await db_session.commit()
+
+            return ProductReadSchema(**new_product.to_dict())
+        except NotFoundError as e:
+            raise NotFoundException(detail="Supplier not found")
 
     @put("/{product_id:int}")
     async def update_product(

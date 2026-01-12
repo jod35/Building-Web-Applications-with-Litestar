@@ -61,18 +61,19 @@ class SupplierInvoiceController(Controller):
         product_repo: ProductRepository,
         db_session: AsyncSession,
     ) -> SupplierInvoiceReadSchema:
-        # 1. Validate Supplier
         supplier = await supplier_repo.get_one_or_none(id=data.supplier_id)
         if not supplier:
-            raise NotFoundException(detail=f"Supplier with ID {data.supplier_id} not found")
+            raise NotFoundException(
+                detail=f"Supplier with ID {data.supplier_id} not found"
+            )
 
-        # 2. Validate Purchase Order (if provided)
         if data.purchase_order_id:
             po = await po_repo.get_one_or_none(id=data.purchase_order_id)
             if not po:
-                raise NotFoundException(detail=f"Purchase Order with ID {data.purchase_order_id} not found")
+                raise NotFoundException(
+                    detail=f"Purchase Order with ID {data.purchase_order_id} not found"
+                )
 
-        # 3. Validate Products & Prepare Items
         items_data = []
         data_dict = asdict(data)
         items = data_dict.pop("items", [])
@@ -80,14 +81,12 @@ class SupplierInvoiceController(Controller):
         for item in items:
             product = await product_repo.get_one_or_none(id=item["product_id"])
             if not product:
-                raise NotFoundException(detail=f"Product with ID {item['product_id']} not found")
-            
-            # TODO: Validate purchase_order_item_id if provided?
-            # For now, simplistic validation.
-            
+                raise NotFoundException(
+                    detail=f"Product with ID {item['product_id']} not found"
+                )
+
             items_data.append(SupplierInvoiceItemModel(**item))
 
-        # 4. Create Invoice
         invoice_model = SupplierInvoiceModel(**data_dict)
         invoice_model.items = items_data
 
@@ -106,15 +105,48 @@ class SupplierInvoiceController(Controller):
     ) -> SupplierInvoiceReadSchema:
         try:
             data_dict = asdict(data)
-            items = data_dict.pop("items", []) # Handle items separately
+            data_dict.pop("items", [])  # Ignore items in this endpoint
 
             data_dict["id"] = invoice_id
-            updated_invoice = await invoice_repo.update(SupplierInvoiceModel(**data_dict))
+            updated_invoice = await invoice_repo.update(
+                SupplierInvoiceModel(**data_dict)
+            )
+
+            await db_session.commit()
+            return SupplierInvoiceReadSchema(**updated_invoice.to_dict())
+        except NotFoundError:
+            raise NotFoundException(detail="Supplier Invoice Not Found")
+
+    @put("/{invoice_id:int}/items")
+    async def update_invoice_items(
+        self,
+        invoice_id: int,
+        data: list[SupplierInvoiceItemWriteSchema],
+        invoice_repo: SupplierInvoiceRepository,
+        product_repo: ProductRepository,
+        db_session: AsyncSession,
+    ) -> SupplierInvoiceReadSchema:
+        try:
+            invoice = await invoice_repo.get(invoice_id)
             
-            # Simple item update: replace all? OR just let user handle items via separate endpoint?
-            # Matching user's PO pattern:
-            updated_invoice.items = [SupplierInvoiceItemModel(**item) for item in items]
+            items_data = []
+            for item in data:
+                item_dict = asdict(item)
+                product = await product_repo.get_one_or_none(id=item_dict["product_id"])
+                if not product:
+                    raise NotFoundException(
+                        detail=f"Product with ID {item_dict['product_id']} not found"
+                    )
+                items_data.append(SupplierInvoiceItemModel(**item_dict))
+
+            invoice.items = items_data
             
+            # We need to manually flush or commit to persist the relationship changes
+            # if the repository update method handles this differently.
+            # However, simpler approach:
+            
+            updated_invoice = await invoice_repo.update(invoice)
+
             await db_session.commit()
             return SupplierInvoiceReadSchema(**updated_invoice.to_dict())
         except NotFoundError:

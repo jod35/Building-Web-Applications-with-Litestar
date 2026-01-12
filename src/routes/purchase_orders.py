@@ -6,10 +6,21 @@ from litestar.di import Provide
 from litestar.exceptions import NotFoundException, ClientException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.db.dependencies import provide_purchase_order_repo, provide_supplier_repo, provide_product_repo
+from src.db.dependencies import (
+    provide_purchase_order_repo,
+    provide_supplier_repo,
+    provide_product_repo,
+)
 from src.db.models import PurchaseOrderModel, PurchaseOrderItemModel
-from src.db.repositories import PurchaseOrderRepository, SupplierRepository, ProductRepository
-from src.schemas.purchase_orders import PurchaseOrderReadSchema, PurchaseOrderWriteSchema
+from src.db.repositories import (
+    PurchaseOrderRepository,
+    SupplierRepository,
+    ProductRepository,
+)
+from src.schemas.purchase_orders import (
+    PurchaseOrderReadSchema,
+    PurchaseOrderWriteSchema,
+)
 
 
 class PurchaseOrderController(Controller):
@@ -49,26 +60,30 @@ class PurchaseOrderController(Controller):
         # 1. Validate Supplier
         supplier = await supplier_repo.get_one_or_none(id=data.supplier_id)
         if not supplier:
-            raise NotFoundException(detail=f"Supplier with ID {data.supplier_id} not found")
+            raise NotFoundException(
+                detail=f"Supplier with ID {data.supplier_id} not found"
+            )
 
         # 2. Validate Products & Prepare Items
         items_data = []
         data_dict = asdict(data)
         items = data_dict.pop("items", [])
-        
+
         for item in items:
             product = await product_repo.get_one_or_none(id=item["product_id"])
             if not product:
-                raise NotFoundException(detail=f"Product with ID {item['product_id']} not found")
+                raise NotFoundException(
+                    detail=f"Product with ID {item['product_id']} not found"
+                )
             items_data.append(PurchaseOrderItemModel(**item))
 
         # 3. Create PO
         po_model = PurchaseOrderModel(**data_dict)
         po_model.items = items_data
-        
+
         new_po = await po_repo.add(po_model)
         await db_session.commit()
-        
+
         return PurchaseOrderReadSchema(**new_po.to_dict())
 
     @put("/{po_id:int}")
@@ -81,8 +96,10 @@ class PurchaseOrderController(Controller):
     ) -> PurchaseOrderReadSchema:
         try:
             data_dict = asdict(data)
-            _ = data_dict.pop("items", []) # Handle item updates separately or ignore for now?
-            
+            _ = data_dict.pop(
+                "items", []
+            )  # Handle item updates separately or ignore for now?
+
             data_dict["id"] = po_id
             updated_po = await po_repo.update(PurchaseOrderModel(**data_dict))
             updated_po.items = data.items

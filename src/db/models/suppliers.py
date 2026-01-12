@@ -6,10 +6,13 @@ from typing import Optional
 
 from src.db.models.products import ProductModel
 from . import *
+
+
 class SupplierModel(BigIntAuditBase):
     """
     Supplier / Vendor master data
     """
+
     __tablename__ = "suppliers"
 
     name: Mapped[str] = mapped_column(VARCHAR(150), nullable=False, index=True)
@@ -33,6 +36,12 @@ class SupplierModel(BigIntAuditBase):
         return f"<SupplierModel {self.name}>"
 
     # relationships
-    products: Mapped[list[ProductModel]] = relationship(back_populates="supplier", lazy="selectin")
-    supplier_invoices: Mapped[list["SupplierInvoiceModel"]] = relationship(back_populates="supplier", lazy="selectin")
-    purchase_orders: Mapped[list["PurchaseOrderModel"]] = relationship(back_populates="supplier", lazy="selectin")
+    products: Mapped[list[ProductModel]] = relationship(
+        back_populates="supplier", lazy="selectin"
+    )
+    supplier_invoices: Mapped[list["SupplierInvoiceModel"]] = relationship(
+        back_populates="supplier", lazy="selectin"
+    )
+    purchase_orders: Mapped[list["PurchaseOrderModel"]] = relationship(
+        back_populates="supplier", lazy="selectin"
+    )

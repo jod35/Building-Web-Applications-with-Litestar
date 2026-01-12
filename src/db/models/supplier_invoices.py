@@ -9,8 +9,10 @@ from enum import Enum
 
 from . import *
 
+
 class InvoiceStatusEnum(Enum):
     """Status of a supplier invoice"""
+
     DRAFT = "DRAFT"
     UNPAID = "UNPAID"
     PARTIALLY_PAID = "PARTIALLY_PAID"
@@ -21,17 +23,18 @@ class InvoiceStatusEnum(Enum):
 
 class PaymentStatusEnum(Enum):
     """Overall payment status"""
+
     PENDING = "PENDING"
     PARTIAL = "PARTIAL"
     COMPLETED = "COMPLETED"
     FAILED = "FAILED"
 
 
-
 class SupplierInvoiceModel(BigIntAuditBase):
     """
     Supplier Invoice / Bill (Purchase Invoice)
     """
+
     __tablename__ = "supplier_invoices"
 
     invoice_number: Mapped[str] = mapped_column(VARCHAR(60), index=True, nullable=False)
@@ -41,7 +44,9 @@ class SupplierInvoiceModel(BigIntAuditBase):
     purchase_order_id: Mapped[Optional[int]] = mapped_column(
         ForeignKey("purchase_orders.id", ondelete="SET NULL"), nullable=True
     )
-    invoice_date: Mapped[datetime] = mapped_column(DATETIME(timezone=True), nullable=False)
+    invoice_date: Mapped[datetime] = mapped_column(
+        DATETIME(timezone=True), nullable=False
+    )
     due_date: Mapped[Optional[datetime]] = mapped_column(DATETIME(timezone=True))
 
     status: Mapped[InvoiceStatusEnum] = mapped_column(
@@ -51,11 +56,17 @@ class SupplierInvoiceModel(BigIntAuditBase):
         ENUM(PaymentStatusEnum), default=PaymentStatusEnum.PENDING
     )
     subtotal: Mapped[Decimal] = mapped_column(DECIMAL(14, 2), default=Decimal("0.00"))
-    other_charges: Mapped[Decimal] = mapped_column(DECIMAL(14, 2), default=Decimal("0.00"))
-    discount_amount: Mapped[Decimal] = mapped_column(DECIMAL(14, 2), default=Decimal("0.00"))
+    other_charges: Mapped[Decimal] = mapped_column(
+        DECIMAL(14, 2), default=Decimal("0.00")
+    )
+    discount_amount: Mapped[Decimal] = mapped_column(
+        DECIMAL(14, 2), default=Decimal("0.00")
+    )
     total_amount: Mapped[Decimal] = mapped_column(DECIMAL(14, 2), nullable=False)
 
-    amount_paid: Mapped[Decimal] = mapped_column(DECIMAL(14, 2), default=Decimal("0.00"))
+    amount_paid: Mapped[Decimal] = mapped_column(
+        DECIMAL(14, 2), default=Decimal("0.00")
+    )
     balance_due: Mapped[Decimal] = mapped_column(DECIMAL(14, 2), nullable=False)
 
     currency: Mapped[str] = mapped_column(VARCHAR(3), default="USD")
@@ -79,6 +90,7 @@ class SupplierInvoiceItemModel(BigIntAuditBase):
     """
     Line item on supplier invoice
     """
+
     __tablename__ = "supplier_invoice_items"
 
     invoice_id: Mapped[int] = mapped_column(
@@ -93,7 +105,9 @@ class SupplierInvoiceItemModel(BigIntAuditBase):
 
     quantity: Mapped[int] = mapped_column(INTEGER, nullable=False)
     unit_price: Mapped[Decimal] = mapped_column(DECIMAL(12, 2), nullable=False)
-    discount_amount: Mapped[Decimal] = mapped_column(DECIMAL(12, 2), default=Decimal("0.00"))
+    discount_amount: Mapped[Decimal] = mapped_column(
+        DECIMAL(12, 2), default=Decimal("0.00")
+    )
     subtotal: Mapped[Decimal] = mapped_column(DECIMAL(14, 2), nullable=False)
 
     received_quantity: Mapped[Optional[int]] = mapped_column(INTEGER)
@@ -107,5 +121,3 @@ class SupplierInvoiceItemModel(BigIntAuditBase):
 
     def __repr__(self) -> str:
         return f"<InvItem Inv:{self.invoice_id} Prod:{self.product_id}>"
-
-
