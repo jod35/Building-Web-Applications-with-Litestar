@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional, List
+from typing import List, Optional
 
 from src.db.models.supplier_invoices import InvoiceStatusEnum, PaymentStatusEnum
 

@@ -2,9 +2,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.repositories import (
     ProductRepository,
-    SupplierRepository,
     PurchaseOrderRepository,
     SupplierInvoiceRepository,
+    SupplierRepository,
 )
 
 

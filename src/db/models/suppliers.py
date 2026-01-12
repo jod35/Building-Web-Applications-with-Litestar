@@ -1,10 +1,12 @@
+from typing import Optional
+
 from litestar.plugins.sqlalchemy import BigIntAuditBase
 from sqlalchemy import ForeignKey
 from sqlalchemy.dialects.mysql import TEXT, VARCHAR
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from typing import Optional
 
 from src.db.models.products import ProductModel
+
 from . import *
 
 

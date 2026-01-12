@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
-from typing import Optional
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
+from typing import Optional
 
 
 class CategoryEnum(Enum):
@@ -56,6 +56,6 @@ class ProductWriteSchema:
     height: Decimal = None
     dimensions_unit: str = "cm"
     stock: int = 0
-    supplier_id : Optional[int] = None
+    supplier_id: Optional[int] = None
     country_of_origin: str = None
     product_metadata: dict = field(default_factory={})

@@ -7,17 +7,17 @@ from litestar.exceptions import NotFoundException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.db.dependencies import (
+    provide_product_repo,
     provide_purchase_order_repo,
     provide_supplier_invoice_repo,
     provide_supplier_repo,
-    provide_product_repo,
 )
-from src.db.models import SupplierInvoiceModel, SupplierInvoiceItemModel
+from src.db.models import SupplierInvoiceItemModel, SupplierInvoiceModel
 from src.db.repositories import (
+    ProductRepository,
     PurchaseOrderRepository,
     SupplierInvoiceRepository,
     SupplierRepository,
-    ProductRepository,
 )
 from src.schemas.supplier_invoices import (
     SupplierInvoiceReadSchema,
@@ -128,7 +128,7 @@ class SupplierInvoiceController(Controller):
     ) -> SupplierInvoiceReadSchema:
         try:
             invoice = await invoice_repo.get(invoice_id)
-            
+
             items_data = []
             for item in data:
                 item_dict = asdict(item)
@@ -140,11 +140,11 @@ class SupplierInvoiceController(Controller):
                 items_data.append(SupplierInvoiceItemModel(**item_dict))
 
             invoice.items = items_data
-            
+
             # We need to manually flush or commit to persist the relationship changes
             # if the repository update method handles this differently.
             # However, simpler approach:
-            
+
             updated_invoice = await invoice_repo.update(invoice)
 
             await db_session.commit()

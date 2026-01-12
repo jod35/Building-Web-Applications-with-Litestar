@@ -7,6 +7,7 @@ from sqlalchemy.dialects.mysql import DECIMAL, ENUM, INTEGER, JSON, TEXT, VARCHA
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.schemas.products import CategoryEnum, StatusEnum
+
 from . import *
 
 

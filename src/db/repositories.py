@@ -2,9 +2,9 @@ from litestar.plugins.sqlalchemy import repository
 
 from src.db.models import (
     ProductModel,
-    SupplierModel,
     PurchaseOrderModel,
     SupplierInvoiceModel,
+    SupplierModel,
 )
 
 
