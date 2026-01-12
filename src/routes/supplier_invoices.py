@@ -20,6 +20,7 @@ from src.db.repositories import (
     SupplierRepository,
 )
 from src.schemas.supplier_invoices import (
+    SupplierInvoiceItemWriteSchema,
     SupplierInvoiceReadSchema,
     SupplierInvoiceWriteSchema,
 )
