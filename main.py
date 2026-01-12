@@ -5,6 +5,7 @@ from src.db.models import ProductModel
 from src.routes.products import ProductController
 from src.routes.suppliers import SupplierController
 from src.routes.purchase_orders import PurchaseOrderController
+from src.routes.supplier_invoices import SupplierInvoiceController
 from src.db.setup import sqla_plugin, sqla_config
 
 @get('/')
@@ -15,7 +16,8 @@ route_handlers = [
     hello,
     ProductController,
     SupplierController,
-    PurchaseOrderController
+    PurchaseOrderController,
+    SupplierInvoiceController
 ]
 
 

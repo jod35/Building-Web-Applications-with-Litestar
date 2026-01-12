@@ -56,9 +56,6 @@ class PurchaseOrderController(Controller):
         data_dict = asdict(data)
         items = data_dict.pop("items", [])
         
-        # Calculate totals if not provided or double check? 
-        # For now, trusting client but validating existence
-        
         for item in items:
             product = await product_repo.get_one_or_none(id=item["product_id"])
             if not product:
@@ -66,11 +63,7 @@ class PurchaseOrderController(Controller):
             items_data.append(PurchaseOrderItemModel(**item))
 
         # 3. Create PO
-        # We need to manually handle the relationship creation or let SQLAlchemy do it
-        # Since we are using async repo, standard add(Model(**data)) might work if relationships are set up correctly
-        
         po_model = PurchaseOrderModel(**data_dict)
-        # Assign items
         po_model.items = items_data
         
         new_po = await po_repo.add(po_model)
@@ -92,6 +85,7 @@ class PurchaseOrderController(Controller):
             
             data_dict["id"] = po_id
             updated_po = await po_repo.update(PurchaseOrderModel(**data_dict))
+            updated_po.items = data.items
             await db_session.commit()
             return PurchaseOrderReadSchema(**updated_po.to_dict())
         except NotFoundError:
