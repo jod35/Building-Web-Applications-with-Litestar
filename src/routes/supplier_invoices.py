@@ -28,6 +28,7 @@ from src.schemas.supplier_invoices import (
 
 class SupplierInvoiceController(Controller):
     path = "/supplier-invoices"
+    tags = ["Supplier Invoice Endpoints"]
     dependencies = {
         "invoice_repo": Provide(provide_supplier_invoice_repo),
         "supplier_repo": Provide(provide_supplier_repo),
