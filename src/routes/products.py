@@ -14,7 +14,6 @@ from src.schemas.products import ProductReadSchema, ProductWriteSchema
 
 class ProductController(Controller):
     path = "/products"
-    tags = ["Product Endpoints"]
 
     dependencies = {
         "product_repo": Provide(provide_product_repo),
@@ -72,11 +71,19 @@ class ProductController(Controller):
         product_id: int,
         data: ProductWriteSchema,
         product_repo: ProductRepository,
+        supplier_repo:SupplierRepository,
         db_session: AsyncSession,
     ) -> ProductReadSchema:
-        try:
-            data_dict = asdict(data)
+        data_dict = asdict(data)
 
+        supplier_id = data.supplier_id
+
+        try:    
+            supplier = await supplier_repo.get(item_id=supplier_id)
+        except NotFoundError:
+            raise NotFoundException(f"No supplier found with id {supplier_id}")
+        
+        try:        
             data_dict["id"] = product_id
             updated_product = await product_repo.update(ProductModel(**data_dict))
             await db_session.commit()

@@ -28,7 +28,6 @@ from src.schemas.supplier_invoices import (
 
 class SupplierInvoiceController(Controller):
     path = "/supplier-invoices"
-    tags = ["Supplier Invoice Endpoints"]
     dependencies = {
         "invoice_repo": Provide(provide_supplier_invoice_repo),
         "supplier_repo": Provide(provide_supplier_repo),
@@ -142,11 +141,6 @@ class SupplierInvoiceController(Controller):
                 items_data.append(SupplierInvoiceItemModel(**item_dict))
 
             invoice.items = items_data
-
-            # We need to manually flush or commit to persist the relationship changes
-            # if the repository update method handles this differently.
-            # However, simpler approach:
-
             updated_invoice = await invoice_repo.update(invoice)
 
             await db_session.commit()

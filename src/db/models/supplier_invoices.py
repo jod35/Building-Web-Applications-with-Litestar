@@ -40,10 +40,10 @@ class SupplierInvoiceModel(BigIntAuditBase):
 
     invoice_number: Mapped[str] = mapped_column(VARCHAR(60), index=True, nullable=False)
     supplier_id: Mapped[int] = mapped_column(
-        ForeignKey("suppliers.id", ondelete="RESTRICT"), nullable=False
+        ForeignKey("suppliers.id", ondelete="CASCADE"), nullable=False
     )
     purchase_order_id: Mapped[Optional[int]] = mapped_column(
-        ForeignKey("purchase_orders.id", ondelete="SET NULL"), nullable=True
+        ForeignKey("purchase_orders.id", ondelete="CASCADE"), nullable=True
     )
     invoice_date: Mapped[datetime] = mapped_column(
         DATETIME(timezone=True), nullable=False
@@ -76,7 +76,7 @@ class SupplierInvoiceModel(BigIntAuditBase):
     supplier: Mapped[SupplierModel] = relationship()
     purchase_order: Mapped[Optional["PurchaseOrderModel"]] = relationship()
     items: Mapped[List["SupplierInvoiceItemModel"]] = relationship(
-        back_populates="invoice", cascade="all, delete-orphan", lazy="selectin"
+        back_populates="invoice", lazy="selectin"
     )
 
     __table_args__ = (

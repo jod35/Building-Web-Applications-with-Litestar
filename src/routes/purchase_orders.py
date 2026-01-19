@@ -25,7 +25,6 @@ from src.schemas.purchase_orders import (
 
 class PurchaseOrderController(Controller):
     path = "/purchase-orders"
-    tags = ["Purchase Order Endpoints"]
     dependencies = {
         "po_repo": Provide(provide_purchase_order_repo),
         "supplier_repo": Provide(provide_supplier_repo),

@@ -31,7 +31,7 @@ class PurchaseOrderModel(BigIntAuditBase):
         VARCHAR(40), unique=True, index=True, nullable=False
     )
     supplier_id: Mapped[int] = mapped_column(
-        ForeignKey("suppliers.id", ondelete="RESTRICT"), nullable=False
+        ForeignKey("suppliers.id", ondelete="CASCADE"), nullable=False
     )
     order_date: Mapped[datetime] = mapped_column(
         DATETIME(timezone=True), server_default=func.now(), nullable=False
@@ -76,7 +76,7 @@ class PurchaseOrderItemModel(BigIntAuditBase):
         ForeignKey("purchase_orders.id", ondelete="CASCADE"), nullable=False
     )
     product_id: Mapped[int] = mapped_column(
-        ForeignKey("products.id", ondelete="RESTRICT"), nullable=False
+        ForeignKey("products.id", ondelete="CASCADE"), nullable=False
     )
 
     quantity_ordered: Mapped[int] = mapped_column(INTEGER, nullable=False)
