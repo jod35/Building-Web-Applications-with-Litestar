@@ -34,6 +34,7 @@ class SupplierInvoiceController(Controller):
         "po_repo": Provide(provide_purchase_order_repo),
         "product_repo": Provide(provide_product_repo),
     }
+    tags= ["Supplier Invoice Routes"]
 
     @get("/")
     async def list_invoices(

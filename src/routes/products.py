@@ -14,7 +14,7 @@ from src.schemas.products import ProductReadSchema, ProductWriteSchema
 
 class ProductController(Controller):
     path = "/products"
-
+    tags= ["Product Routes"]
     dependencies = {
         "product_repo": Provide(provide_product_repo),
         "supplier_repo": Provide(provide_supplier_repo),

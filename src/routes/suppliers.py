@@ -15,6 +15,7 @@ from src.schemas.suppliers import SupplierReadSchema, SupplierWriteSchema
 class SupplierController(Controller):
     path = "/suppliers"
     dependencies = {"supplier_repo": Provide(provide_supplier_repo)}
+    tags= ["Supplier Routes"]
 
     @get("/")
     async def list_suppliers(

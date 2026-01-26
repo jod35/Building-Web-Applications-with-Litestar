@@ -30,6 +30,7 @@ class PurchaseOrderController(Controller):
         "supplier_repo": Provide(provide_supplier_repo),
         "product_repo": Provide(provide_product_repo),
     }
+    tags= ["Purchase Order Routes"]
 
     @get("/")
     async def list_purchase_orders(
