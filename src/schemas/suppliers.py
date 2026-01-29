@@ -5,7 +5,6 @@ from typing import Optional
 
 @dataclass
 class SupplierReadSchema:
-    id: int
     name: str
     company_name: Optional[str]
     contact_person: Optional[str]
@@ -21,6 +20,7 @@ class SupplierReadSchema:
     notes: Optional[str]
     created_at: datetime
     updated_at: datetime
+    id: Optional[int] = None
 
 
 @dataclass

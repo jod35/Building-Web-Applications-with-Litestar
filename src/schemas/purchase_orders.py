@@ -16,7 +16,6 @@ class PurchaseOrderStatus(str, Enum):
 
 @dataclass
 class PurchaseOrderReadSchema:
-    id: int
     po_number: str
     supplier_id: int
     order_date: datetime
@@ -29,6 +28,7 @@ class PurchaseOrderReadSchema:
     notes: Optional[str]
     created_at: datetime
     updated_at: datetime
+    id: Optional[int] = None
 
 
 @dataclass
@@ -48,7 +48,6 @@ class PurchaseOrderWriteSchema:
 
 @dataclass
 class PurchaseOrderItemReadSchema:
-    id: int
     purchase_order_id: int
     product_id: int
     quantity_ordered: int
@@ -59,6 +58,8 @@ class PurchaseOrderItemReadSchema:
     notes: Optional[str]
     created_at: datetime
     updated_at: datetime
+    id: Optional[int] = None
+
 
 
 @dataclass

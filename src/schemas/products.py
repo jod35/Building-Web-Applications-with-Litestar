@@ -18,7 +18,6 @@ class StatusEnum(Enum):
 
 @dataclass
 class ProductReadSchema:
-    id: int
     name: str
     description: str
     category: CategoryEnum

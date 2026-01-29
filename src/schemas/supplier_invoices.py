@@ -8,7 +8,6 @@ from src.db.models.supplier_invoices import InvoiceStatusEnum, PaymentStatusEnum
 
 @dataclass
 class SupplierInvoiceItemReadSchema:
-    id: int
     invoice_id: int
     product_id: int
     purchase_order_item_id: Optional[int]
@@ -20,6 +19,8 @@ class SupplierInvoiceItemReadSchema:
     notes: Optional[str]
     created_at: datetime
     updated_at: datetime
+    id: Optional[int] = None
+
 
 
 @dataclass
@@ -36,7 +37,6 @@ class SupplierInvoiceItemWriteSchema:
 
 @dataclass
 class SupplierInvoiceReadSchema:
-    id: int
     invoice_number: str
     supplier_id: int
     purchase_order_id: Optional[int]
@@ -52,9 +52,9 @@ class SupplierInvoiceReadSchema:
     balance_due: Decimal
     currency: str
     notes: Optional[str]
-    # items: List[SupplierInvoiceItemReadSchema] # Optional: include items?
     created_at: datetime
     updated_at: datetime
+    id: Optional[int] = None
 
 
 @dataclass
@@ -75,3 +75,4 @@ class SupplierInvoiceWriteSchema:
     amount_paid: Decimal = Decimal("0.00")
     currency: str = "USD"
     notes: Optional[str] = None
+    id: Optional[int] = None

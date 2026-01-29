@@ -1,8 +1,6 @@
 from litestar import Litestar, get
-from sqlalchemy import select
 
-from src.db.models import ProductModel
-from src.db.setup import sqla_config, sqla_plugin
+from src.db.setup import sqla_plugin
 from src.routes.products import ProductController
 from src.routes.purchase_orders import PurchaseOrderController
 from src.routes.supplier_invoices import SupplierInvoiceController
