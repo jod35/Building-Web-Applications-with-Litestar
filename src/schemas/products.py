@@ -34,7 +34,8 @@ class ProductReadSchema:
     stock: int = 0
     supplier_id: int = None
     country_of_origin: str = None
-    product_metadata: dict = field(default_factory={})
+    product_metadata: dict = field(default_factory=lambda:{})
+    id: Optional[int]= None
     updated_at: datetime = None
     created_at: datetime = None
 

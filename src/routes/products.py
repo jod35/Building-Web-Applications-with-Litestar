@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.db.dependencies import provide_product_repo, provide_supplier_repo
 from src.db.models import ProductModel
 from src.db.repositories import ProductRepository, SupplierRepository
+from src.dtos.products import ProductReturnDTO
 from src.schemas.products import ProductReadSchema, ProductWriteSchema
 
 
@@ -38,7 +39,7 @@ class ProductController(Controller):
         except NotFoundError:
             raise NotFoundException(detail="Product not found")
 
-    @post("/")
+    @post("/", return_dto=ProductReturnDTO)
     async def create_product(
         self,
         data: ProductWriteSchema,
