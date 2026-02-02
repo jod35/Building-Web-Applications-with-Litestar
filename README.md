@@ -12,7 +12,7 @@ $ uv sync
 $ uv run litestar --app main:app run -rd
 ```
 
-The db strturucture is found [here](./docs/imgs/erd.png). 
+The db structure is found [here](./docs/imgs/erd.png). 
 
 Full project was part of a podcast series [here](https://youtube.com/playlist?list=PLEt8Tae2spYncMXg-YJZfjk5Ls2PfQOBS&si=E4leZS8-OhVct5hZ)
 
