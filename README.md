@@ -12,6 +12,8 @@ $ uv sync
 $ uv run litestar --app main:app run -rd
 ```
 
+The db strturucture is found [here](./docs/imgs/erd.png). 
+
 Full project was part of a podcast series [here](https://youtube.com/playlist?list=PLEt8Tae2spYncMXg-YJZfjk5Ls2PfQOBS&si=E4leZS8-OhVct5hZ)
 
 ## Remaining Topics
@@ -22,12 +24,6 @@ Full project was part of a podcast series [here](https://youtube.com/playlist?li
   - Refactor existing CRUD repo/service to use injected dependencies  
   - Inject DB session, current user, config, etc.  
   - Why it's better than manual passing in many frameworks
-
-- [ ] **Video #7: DTOs (Data Transfer Objects) for Safe & Clean APIs**  
-  - Intro to Litestar DTO system (DTOConfig, DataclassDTO, partial updates)  
-  - Create read/write DTOs for your models to control exposed fields  
-  - Prevent over-posting/mass assignment issues  
-  - Update CRUD endpoints to use DTOs
 
 - [ ] **Video #8: Authentication with JWT & Guards**  
   - Set up JWT auth (using litestar[jwt] extra)  
