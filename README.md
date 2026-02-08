@@ -9,7 +9,7 @@ $ uv sync
 ## Run the application
 
 ```bash
-$ uv run litestar --app main:app run -rd
+$ export LITESTAR_APP=main:app && uv run litestar run -rd
 ```
 
 The db structure is found [here](./docs/imgs/erd.png). 
@@ -21,7 +21,6 @@ Full project was part of a podcast series [here](https://youtube.com/playlist?li
 ## High Priority (Next 3–5 Videos – Core & Most Requested Features)
 - [ ] **Video #6: Dependency Injection Deep Dive**  
   - Explain Litestar's powerful DI system (request-scoped, app-scoped, stateful/stateless)  
-  - Refactor existing CRUD repo/service to use injected dependencies  
   - Inject DB session, current user, config, etc.  
   - Why it's better than manual passing in many frameworks
 
